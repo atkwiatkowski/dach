@@ -22,7 +22,16 @@
     border: none;
     border-radius: 5px;
     margin-bottom: 20px;
-    transition: background-color 0.3s ease; /* Smooth transition for color change */
+    /* transition: all 3s ease; */
+    /* transition: all 0.3s ease; */
+    /* transition: animate 3s ease; */
+    /* transition: background-color 0.3s ease, animate 3s ease; */
+    transition: background-color 0.3s ease, transform 3s ease;
+  }
+  #myButton.animate {
+    transform: scale(0.5); /* Shrink slightly on click */
+    background-color: #0056b3; /* Change background color */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
   }
   #myButton:hover {
     background-color: #0056b3;
@@ -177,8 +186,14 @@
           else return "Your wheelbarrow is steady."
         }
 
+      let isAnimating = false;
       button.addEventListener('click', function() {
-
+        if (isAnimating) return;
+        button.classList.add('animate')
+        isAnimating = true;
+        setTimeout(function(){button.classList.remove('animate');}, 3000);
+        setTimeout(function(){isAnimating=false;}, 5000);
+        
         if (stepCount >= 10) {
             textDiv.textContent = `Max steps is 10`;
             return
