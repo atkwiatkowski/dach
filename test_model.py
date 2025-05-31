@@ -23,6 +23,8 @@ a_meas = np.array([1,1])
 print(a_vecs_inv @ a_meas)
 print(a_fullspam @ a_vecs)
 
+# print("probs: ")
+
 print("--------")
 
 b_spamprob = .9
@@ -46,6 +48,8 @@ print(b_vecs_inv @ b_fullerr @ b_vecs)
 b_meas = b_fullspam
 print(b_vecs_inv @ b_meas)
 print(b_fullspam @ b_vecs)
+
+
 # print(a_spv)
 # print(atr)
 # print(a_errmat)
@@ -58,6 +62,10 @@ def eval_model(spam, meas, mat, n):
 ns = list(range(100))
 ssa = [eval_model(a_fullspam, a_meas, a_fullerr, n) for n in ns]
 ssb = [eval_model(b_fullspam, b_meas, b_fullerr, n) for n in ns]
+
+print("------")
+print([float(x) for x in ssa[:10]])
+print([float(x) for x in ssb[:10]])
 # ssb = [eval_model(b_fullspa)]
 # print(eval_model(a_spv, a_errmat, 1))
 

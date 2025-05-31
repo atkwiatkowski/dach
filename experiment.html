@@ -33,6 +33,26 @@
   #myButton.alt-color:hover {
     background-color: #1e7e34; /* Darker shade for hover */
   }
+  #checkButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+  }
+  #checkButton:hover {
+    background-color: #0056b3;
+  }
+  #checkButton.alt-color {
+    background-color: #28a745; /* Alternative color */
+  }
+  #checkButton.alt-color:hover {
+    background-color: #1e7e34; /* Darker shade for hover */
+  }
   #myTextDiv {
     font-size: 24px;
     color: #333;
@@ -120,37 +140,90 @@
   <button id="myButton">Step Forward</button>
   <button id="checkButton">Check</button>
   <div id="myTextDiv">
-    This is the initial text.
+    Choose a path!
   </div>
 
   <script>
+    function bernoulliSample(p) {
+        if (typeof p !== 'number' || p < 0 || p > 1) {
+            throw new Error("Probability 'p' must be a number between 0 and 1.");
+        }
+
+        return Math.random() < p ? 1 : 0;
+    }
     document.addEventListener('DOMContentLoaded', function() {
       const button = document.getElementById('myButton');
+      const check = document.getElementById('checkButton');
       const textDiv = document.getElementById('myTextDiv');
       const colorToggle = document.getElementById('colorToggle'); // Get the toggle switch
       let stepCount = 0;
-      // let isWobbling = false; // This variable was declared but not used.
+      let isWobbling = false; // This variable was declared but not used.
+      let isBlue = true;
+      let blueWobStart = .1
+      let greenWobStart = .5
+
+      let blueWobWob = .2
+      let blueSteadyWob = .4
+
+      let greenWobWob = .5
+      let greenSteadyWob = .5
+
+      let greenProbs = [1.0, 0.9724999999999999, 0.9457875, 0.9198084999999999, 0.8945430959375, 0.8699716848421875, 0.846075204050453, 0.8228351145001562, 0.8002333863623202, 0.7782524850533526];
+      let blueProbs = [0.8200000000000001, 0.5955980000000001, 0.6388431532, 0.62888263674488, 0.6295018372839103, 0.6280202453726306, 0.6269587359444396, 0.6258161558381224, 0.6246921296717871, 0.623566847729993];
+
+      function checkWob(p) {
+          isWobbling = bernoulliSample(p);
+          if (isWobbling) return "Your wheelbarrow is wobbling."
+          else return "Your wheelbarrow is steady."
+        }
 
       button.addEventListener('click', function() {
-        stepCount++; // Changed clickCount to stepCount for consistency
-        textDiv.textContent = `You have taken ${stepCount} steps. `;
+
+        if (stepCount >= 10) {
+            textDiv.textContent = `Max steps is 10`;
+            return
+        }
+        stepCount++;
+        let p;
+        if (isBlue) {
+            p = (isWobbling) ? blueWobWob : blueSteadyWob
+        } else {
+            p = (isWobbling) ? greenWobWob : greenSteadyWob
+        }
+        textDiv.textContent = `You have taken ${stepCount} steps. ` + checkWob(p);
       });
 
-      const checkButton = document.getElementById('checkButton');
+      checkButton.addEventListener('click', function() {
+        if (stepCount == 0) return;
+
+        let totalp = (isBlue) ? blueProbs[stepCount-1] : greenProbs[stepCount-1];
+        console.log(stepCount, totalp);
+        let r = bernoulliSample(totalp);
+        textDiv.textContent = (r) ? `Your octopus is all good!` : `Your octupus didn't make it.`;
+        stepCount = 0;
+      });
+
+    //   const checkButton = document.getElementById('checkButton');
       // No specific functionality for checkButton was provided in the original script.
 
       // Event listener for the color toggle switch
       colorToggle.addEventListener('change', function() {
         if (this.checked) {
           button.classList.add('alt-color'); // Add a class for the alternative color
+          check.classList.add('alt-color'); // Add a class for the alternative color
           stepCount = 0
-          textDiv.textContent = `You are starting on the Green path.`;
+          textDiv.textContent = `You are starting on the Green path. ` + checkWob(greenWobStart);
+          isBlue = false;
         } else {
           button.classList.remove('alt-color'); // Remove the class to revert to default
+          check.classList.remove('alt-color'); // Remove the class to revert to default
           stepCount = 0
-          textDiv.textContent = `You are starting on the Blue path.`;
-
+        //   isWob = bernoulliSample(blueWobStart);
+          textDiv.textContent = `You are starting on the Blue path. ` + checkWob(blueWobStart);
+          isBlue = true;
         }
+
+        
       });
 
     });
