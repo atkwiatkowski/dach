@@ -1,0 +1,51 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+a_spamprob = .9
+a_t1 = .8
+a_t2 = .4
+
+a_spamerr = np.array([.98,.99])
+a_err = [[.95,.97],[.99,.98]]
+
+a_spv = np.array([1-a_spamprob, a_spamprob])
+atr = np.array([[1-a_t1, a_t1],[a_t2, 1 - a_t2]])
+a_fullerr = np.multiply(atr, a_err)
+a_fullspam = np.multiply(a_spv, a_spamerr)
+
+a_eigs, a_vecs = np.linalg.eig(a_fullerr)
+a_vecs_inv = np.linalg.inv(a_vecs)
+
+print(a_vecs_inv @ a_fullerr @ a_vecs)
+# a_meas = np.array([1-a_])
+a_meas = a_fullspam
+print(a_vecs_inv @ a_meas)
+print(a_fullspam @ a_vecs)
+
+b_spamprob = .4
+b_t1 = .45
+b_t2 = .4
+
+b_spamerr = np.array([.98,.99])
+b_err = [[.95,.97],[.99,.98]]
+
+b_spv = np.array([1-b_spamprob, b_spamprob])
+btr = np.array([[1-b_t1, b_t1],[b_t2, 1 - b_t2]])
+b_fullerr = np.multiply(btr, b_err)
+b_fullspam = np.multiply(b_spv, b_spamerr)
+# print(a_spv)
+# print(atr)
+# print(a_errmat)
+
+
+def eval_model(spam, mat, n):
+    meas = np.array([1,1])
+    return spam @ np.linalg.matrix_power(mat, n) @ meas
+
+ns = list(range(100))
+ss = [eval_model(a_fullspam, a_fullerr, n) for n in ns]
+# print(eval_model(a_spv, a_errmat, 1))
+
+plt.plot(ns,ss)
+plt.yscale('log')
+plt.show()
