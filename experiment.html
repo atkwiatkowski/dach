@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Text Update Example</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+  }
+  #myButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  #myButton:hover {
+    background-color: #0056b3;
+  }
+  #myTextDiv {
+    font-size: 24px;
+    color: #333;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 300px;
+  }
+</style>
+</head>
+<body>
+
+  <button id="myButton">Step Forward</button>
+  <button id="checkButton">Check</button>
+  <div id="myTextDiv">
+    This is the initial text.
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('myButton');
+      const textDiv = document.getElementById('myTextDiv');
+      let stepCount = 0;
+      let isWobbling = false;
+
+      button.addEventListener('click', function() {
+        clickCount++;
+        textDiv.textContent = `You have taken ${stepCount} steps. `;
+      });
+
+      const checkButton = document.getElementById('checkButton');
+
+    });
+  </script>
+
+</body>
+</html>
