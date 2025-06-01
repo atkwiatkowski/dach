@@ -191,8 +191,8 @@
         if (isAnimating) return;
         button.classList.add('animate')
         isAnimating = true;
-        setTimeout(function(){button.classList.remove('animate');}, 3000);
-        setTimeout(function(){isAnimating=false;}, 5000);
+        setTimeout(function(){button.classList.remove('animate');}, 250);
+        setTimeout(function(){isAnimating=false;}, 500);
         
         if (stepCount >= 10) {
             textDiv.textContent = `Max steps is 10`;
